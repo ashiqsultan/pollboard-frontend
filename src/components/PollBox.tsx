@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import constants from '../constants';
 import { isVoted, setVoted } from '../utils/voteSession';
+import { getPoll, updatePoll } from '../api';
 
 const { POLL_UPDATE, UPDATE_ROOM, LEAVE_ALL_ROOM } = constants.SOCKET_EVENTS;
 
@@ -10,17 +11,27 @@ type Props = {
 };
 const PollBox = (props: Props) => {
   let { pollId } = useParams();
-  const [pollBox, setPollBox] = useState(null);
+  const [pollBox, setPollBox] = useState({});
+  const [poll, setPoll] = useState({});
   const { socket } = props;
   const joinRoom = (pollId: string) => {
     socket.emit(UPDATE_ROOM, { pollId });
   };
   useEffect(() => {
+    const getPollData = async () => {
+      try {
+        const pollData = await getPoll(pollId!);
+        if (pollData && pollData.data) {
+          setPollBox(pollData.data.pollBox);
+          setPoll(pollData.data.poll);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     if (pollId) {
       joinRoom(pollId);
-      if (isVoted(pollId)) {
-        // TODO: Get pollBox data from API
-      }
+      getPollData();
     }
     socket.on(POLL_UPDATE, (data: any) => {
       if (data.entityId && data.entityId === pollId) {
@@ -34,7 +45,7 @@ const PollBox = (props: Props) => {
   }, []);
   return (
     <>
-      Poll Box
+      <div>{JSON.stringify(poll)}</div>
       <div>{JSON.stringify(pollBox)}</div>
     </>
   );
