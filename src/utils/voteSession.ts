@@ -1,15 +1,13 @@
 /**
  * Module to check if a user has voted on a poll
- * The voted polls of user are stored in local storage in the format voted:<pollId> = 'true'
- * Example: if pollId is '12345' the local storage key will look like 'voted:12345' with value 'true'
+ * The voted polls of user are stored in local storage in the format vote:<pollId> = <answer>
+ * Example: if pollId is '12345' and user voted option is 'Tea'
+ * The local storage key will be 'vote:12345' with value 'Tea
  */
-const isVoted = (pollId: string) => {
-  const voted = localStorage.getItem(`voted:${pollId}`) || '';
-  return voted === 'true';
+export const getVote = (pollId: string) => {
+  return localStorage.getItem(`vote:${pollId}`) || '';
 };
 
-const setVoted = (pollId: string) => {
-  localStorage.setItem(`voted:${pollId}`, 'true');
+export const setVote = (pollId: string, value: string) => {
+  localStorage.setItem(`vote:${pollId}`, value);
 };
-
-export { isVoted, setVoted };

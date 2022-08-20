@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import constants from '../constants';
-import { isVoted, setVoted } from '../utils/voteSession';
-import { getPoll, updatePoll } from '../api';
+import { getPoll } from '../api';
 import Poll from './Poll';
 
 const { POLL_UPDATE, UPDATE_ROOM, LEAVE_ALL_ROOM } = constants.SOCKET_EVENTS;
@@ -46,7 +45,11 @@ const PollBox = (props: Props) => {
   }, []);
   return (
     <>
-      <Poll name={poll.name} options={poll.options} />
+      <div>
+        {pollId && (
+          <Poll pollId={pollId} name={poll.name} options={poll.options} />
+        )}
+      </div>
       <div>{JSON.stringify(poll)}</div>
       <div>{JSON.stringify(pollBox)}</div>
     </>
