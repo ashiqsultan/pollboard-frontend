@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import constants from '../constants';
 import { isVoted, setVoted } from '../utils/voteSession';
 import { getPoll, updatePoll } from '../api';
+import Poll from './Poll';
 
 const { POLL_UPDATE, UPDATE_ROOM, LEAVE_ALL_ROOM } = constants.SOCKET_EVENTS;
 
@@ -12,7 +13,7 @@ type Props = {
 const PollBox = (props: Props) => {
   let { pollId } = useParams();
   const [pollBox, setPollBox] = useState({});
-  const [poll, setPoll] = useState({});
+  const [poll, setPoll] = useState({ name: '', options: [] });
   const { socket } = props;
   const joinRoom = (pollId: string) => {
     socket.emit(UPDATE_ROOM, { pollId });
@@ -45,6 +46,7 @@ const PollBox = (props: Props) => {
   }, []);
   return (
     <>
+      <Poll name={poll.name} options={poll.options} />
       <div>{JSON.stringify(poll)}</div>
       <div>{JSON.stringify(pollBox)}</div>
     </>
