@@ -13,8 +13,6 @@ const socket = io('localhost:3000', {
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [lastPong, setLastPong] = useState(null);
-  const [pollBox, setPollBox] = useState(null);
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -25,14 +23,6 @@ function App() {
       setIsConnected(false);
     });
 
-    socket.on('pong', () => {
-      setLastPong(new Date().toISOString());
-    });
-
-    socket.on('poll_update', (data) => {
-      setPollBox(data);
-    });
-
     return () => {
       socket.off('connect');
       socket.off('disconnect');
@@ -40,19 +30,12 @@ function App() {
     };
   }, []);
 
-  const sendPing = () => {
-    socket.emit('ping');
-  };
-  const joinRoom = (pollId: string) => {
-    socket.emit('update_room', { pollId });
-  };
-
   return (
     <Router>
       <AppBar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/poll/:pollId' element={<PollBox />} />
+        <Route path='/poll/:pollId' element={<PollBox socket={socket} />} />
         <Route path='*' element={<div>404 Page Not Found</div>} />
       </Routes>
     </Router>
