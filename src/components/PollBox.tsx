@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import constants from '../constants';
 import { getPoll } from '../api';
 import Poll from './Poll';
+import PollChart from './PollChart';
+import { getVote } from '../utils/voteSession';
 
 const { POLL_UPDATE, UPDATE_ROOM, LEAVE_ALL_ROOM } = constants.SOCKET_EVENTS;
 
@@ -13,6 +15,8 @@ const PollBox = (props: Props) => {
   let { pollId } = useParams();
   const [pollBox, setPollBox] = useState({});
   const [poll, setPoll] = useState({ name: '', options: [] });
+  const [options, setOptions] = useState([]);
+  const [votes, setVotes] = useState([]);
   const { socket } = props;
   const joinRoom = (pollId: string) => {
     socket.emit(UPDATE_ROOM, { pollId });
@@ -43,15 +47,25 @@ const PollBox = (props: Props) => {
       socket.emit(LEAVE_ALL_ROOM);
     };
   }, []);
+
+  useEffect(() => {
+    if (pollBox && Object.keys(pollBox).length > 0) {
+      setOptions(Object.keys(pollBox));
+      setVotes(Object.values(pollBox));
+    }
+  }, [pollBox]);
   return (
     <>
-      <div>
-        {pollId && (
+      {pollId && (
+        <div>
           <Poll pollId={pollId} name={poll.name} options={poll.options} />
-        )}
-      </div>
-      <div>{JSON.stringify(poll)}</div>
-      <div>{JSON.stringify(pollBox)}</div>
+        </div>
+      )}
+      {getVote(pollId || '') && (
+        <div>
+          <PollChart options={options} votes={votes} />
+        </div>
+      )}
     </>
   );
 };
