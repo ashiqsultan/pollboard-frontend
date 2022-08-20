@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -12,6 +13,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export default function Home() {
+  const navigate = useNavigate();
+  const pollIdInput = useRef('');
   const [isPollIdDialog, setIsPollIdDialog] = useState(false);
   function CardCreate() {
     return (
@@ -47,6 +50,14 @@ export default function Home() {
     );
   }
 
+  const gotToPollBox = () => {
+    // TODO: Acknowledge pollID validity from backend
+    if (pollIdInput.current) {
+      navigate(`/poll/${pollIdInput.current}`);
+    } else {
+      alert('Poll Id not found');
+    }
+  };
   const handleClose = () => setIsPollIdDialog(false);
   const PollIdDialog = () => {
     return (
@@ -59,15 +70,16 @@ export default function Home() {
           <TextField
             autoFocus
             margin='dense'
-            id='name'
+            id='poll-id-input'
             type='text'
             fullWidth
             variant='standard'
+            onChange={(e) => (pollIdInput.current = e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>View</Button>
+          <Button onClick={gotToPollBox}>View</Button>
         </DialogActions>
       </Dialog>
     );
