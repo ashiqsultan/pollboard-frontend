@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import AppBar from './components/AppBar';
 import Home from './components/Home';
 import PollBox from './components/PollBox';
+import CreatePoll from './components/CreatePoll';
 
 const socket = io('localhost:3000', {
   extraHeaders: {
@@ -35,6 +36,7 @@ function App() {
       <AppBar />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/create-poll' element={<CreatePoll />} />
         <Route path='/poll/:pollId' element={<PollBox socket={socket} />} />
         <Route path='*' element={<div>404 Page Not Found</div>} />
       </Routes>

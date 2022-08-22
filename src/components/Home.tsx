@@ -19,7 +19,7 @@ export default function Home() {
   function CardCreate() {
     return (
       <Card>
-        <CardActionArea>
+        <CardActionArea onClick={() => navigate('/create-poll')}>
           <CardContent>
             <Typography gutterBottom variant='h5' component='div'>
               Create Poll
