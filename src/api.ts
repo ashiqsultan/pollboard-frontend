@@ -8,16 +8,35 @@ interface AppRes {
   errMsg?: string;
 }
 
+export interface Poll {
+  name: string;
+  options: string[];
+  isClosed: boolean;
+  entityId?: string;
+}
 interface PollResData extends AppRes {
   data: {
-    poll: {
-      name: string;
-      options: string[];
-      isClosed: boolean;
-    };
+    poll: Poll;
     pollBox: object;
   };
 }
+
+const createPoll = async (poll: Poll): Promise<PollResData> => {
+  try {
+    const config = {
+      method: 'post',
+      url: `${apiUrl}/poll`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: poll,
+    };
+    const newPollRes = await axios(config);
+    return newPollRes.data as PollResData;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getPoll = async (pollId: string): Promise<PollResData> => {
   try {
@@ -28,10 +47,7 @@ const getPoll = async (pollId: string): Promise<PollResData> => {
   }
 };
 
-const updatePoll = async (
-  pollId: string,
-  option: string
-): Promise<PollResData> => {
+const updatePoll = async (pollId: string, option: string): Promise<any> => {
   try {
     const data = { option };
     const config = {
@@ -44,10 +60,10 @@ const updatePoll = async (
     };
     const response = await axios(config);
     console.log(response.data);
-    return response.data as PollResData;
+    return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export { getPoll, updatePoll };
+export { getPoll, updatePoll, createPoll };
