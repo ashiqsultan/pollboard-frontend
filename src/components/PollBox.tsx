@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import constants from '../constants';
 import { getPoll } from '../api';
 import Poll from './Poll';
@@ -56,16 +58,28 @@ const PollBox = (props: Props) => {
   }, [pollBox]);
   return (
     <>
-      {pollId && (
-        <div>
-          <Poll pollId={pollId} name={poll.name} options={poll.options} />
-        </div>
-      )}
-      {getVote(pollId || '') && (
-        <div>
-          <PollChart options={options} votes={votes} />
-        </div>
-      )}
+      <div style={{ padding: '20px' }}>
+        <Card>
+          <CardContent>
+            <div style={{ padding: '10px' }}>
+              {pollId && (
+                <div>
+                  <Poll
+                    pollId={pollId}
+                    name={poll.name}
+                    options={poll.options}
+                  />
+                </div>
+              )}
+              {getVote(pollId || '') && (
+                <div>
+                  <PollChart options={options} votes={votes} />
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </>
   );
 };

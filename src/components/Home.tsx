@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -87,9 +88,36 @@ export default function Home() {
   return (
     <>
       <PollIdDialog />
-      <div style={{ display: 'flex' }}>
-        <CardCreate />
-        <CardView />
+      <div style={{ marginTop: '100px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ width: '100%' }}>
+            <Typography style={{ textAlign: 'center' }} variant='h3'>
+              Welcome to Poll Board 🗳️
+            </Typography>
+            <Grid
+              style={{
+                display: 'flex',
+                justifyContent: 'space-evenly',
+                marginTop: '20px',
+              }}
+              container
+              spacing={1}
+            >
+              <Grid item xs={4}>
+                <CardCreate />
+              </Grid>
+              <Grid item xs={4}>
+                <CardView />
+              </Grid>
+            </Grid>
+          </div>
+        </div>
       </div>
     </>
   );
