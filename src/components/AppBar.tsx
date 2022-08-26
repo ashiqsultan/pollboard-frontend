@@ -16,6 +16,10 @@ export default function MainAppBar() {
             onClick={() => {
               navigate('/');
             }}
+            style={{
+              cursor: 'pointer',
+              maxWidth: 'fit-content',
+            }}
           >
             Poll Board
           </Typography>
