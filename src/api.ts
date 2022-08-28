@@ -1,7 +1,7 @@
 import axios from 'axios';
+import constants from './constants';
 
-const apiUrl = 'http://localhost:7000';
-
+const { API_URL } = constants;
 interface AppRes {
   data: any;
   isError: boolean;
@@ -25,7 +25,7 @@ const createPoll = async (poll: Poll): Promise<PollResData> => {
   try {
     const config = {
       method: 'post',
-      url: `${apiUrl}/poll`,
+      url: `${API_URL}/poll`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,7 +40,7 @@ const createPoll = async (poll: Poll): Promise<PollResData> => {
 
 const getPoll = async (pollId: string): Promise<PollResData> => {
   try {
-    const response = await axios.get(`${apiUrl}/poll/${pollId}`);
+    const response = await axios.get(`${API_URL}/poll/${pollId}`);
     return response.data as PollResData;
   } catch (error) {
     throw error;
@@ -52,7 +52,7 @@ const updatePoll = async (pollId: string, option: string): Promise<any> => {
     const data = { option };
     const config = {
       method: 'patch',
-      url: `${apiUrl}/poll-box/${pollId}`,
+      url: `${API_URL}/poll-box/${pollId}`,
       headers: {
         'Content-Type': 'application/json',
       },

@@ -5,8 +5,10 @@ import AppBar from './components/AppBar';
 import Home from './components/Home';
 import PollBox from './components/PollBox';
 import CreatePoll from './components/CreatePoll';
+import constants from './constants';
 
-const socket = io('localhost:3000', {
+const { SOCKET_URL } = constants;
+const socket = io(SOCKET_URL, {
   extraHeaders: {
     'my-custom-header': 'abcd',
   },
